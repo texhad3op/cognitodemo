@@ -1,0 +1,8 @@
+rzero:
+  jwt:
+    connection-timeout: 2000
+    read-timeout: 2000
+    user-pool-id: us-east-1_ldWfIUbW5
+    user-pool-app-client-id: 2am4d6jvsh87ppr3adrtklrf0n
+    jwks-url: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_ldWfIUbW5/.well-known/jwks.json
+    issuer: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_ldWfIUbW5
