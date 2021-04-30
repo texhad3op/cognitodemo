@@ -1,5 +1,6 @@
 package com.rzero.cognitodemo.cognitodemo.controllers;
 
+import com.rzero.cognitodemo.cognitodemo.controllers.requests.ChangeTemporaryPasswordRequest;
 import com.rzero.cognitodemo.cognitodemo.controllers.requests.LoginRequest;
 import com.rzero.cognitodemo.cognitodemo.controllers.requests.LogoutRequest;
 import com.rzero.cognitodemo.cognitodemo.controllers.requests.RefreshTokenRequest;
@@ -14,13 +15,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 @AllArgsConstructor
 @RestController
 public class JWTRest {
 
     private final CognitoClientService cognito;
+
+    @PostMapping("/api/public/confirm")
+    public void confirmProfile(@RequestBody ChangeTemporaryPasswordRequest req) {
+        cognito.confirmCognitoUser(req);
+    }
 
     @PostMapping("/api/public/login")
     public ResponseEntity login(@RequestBody LoginRequest req) {
@@ -31,8 +36,7 @@ public class JWTRest {
     public ResponseEntity logout(HttpServletRequest request, @RequestBody LogoutRequest req) {
         cognito.logout(req);
         SecurityContextHolder.clearContext();
-        HttpSession session = request.getSession();
-        session.invalidate();
+        request.getSession().invalidate();
         return ResponseEntity.ok().build();
     }
 
@@ -43,11 +47,11 @@ public class JWTRest {
 
     @GetMapping("/api/public/check")
     public ResponseEntity publicCheck() {
-        return ResponseEntity.status(HttpStatus.OK).body("It is ok!");
+        return ResponseEntity.status(HttpStatus.OK).body("Not secured. It is ok!");
     }
 
     @GetMapping("/api/secured/check")
     public ResponseEntity securedCheck() {
-        return ResponseEntity.status(HttpStatus.OK).body("It is ok!");
+        return ResponseEntity.status(HttpStatus.OK).body("Secured. It is ok!");
     }
 }
